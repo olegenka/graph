@@ -1,0 +1,81 @@
+class Solution {
+    public long[] countOfPairs(int n, int x, int y) {
+        long[] result = new long[n];
+
+        
+         int k,dist,mid;
+         if (x>y)
+         {k=x;
+          x=y;
+          y=k;}
+          k=1;
+         
+        // Внутри круга
+         for (int i = 0; i < (y-x+1)/2 ; i++) //второй промежуток
+            {
+                if ((i+1)*2== (y-x+1))
+                 {result[i] = result[i] + (y-x+1);}
+                 else {
+                 {result[i] = result[i] + (y-x+1)*2;}
+                 }
+                  
+            }
+           ;
+
+        // Внутри линии
+        for (int i = 1; i <  x - 1; ++i) {
+            result[i - 1] += ( x - 1 - i) * 2;
+        }
+        for (int i = 1; i <  n - y; ++i) {
+            result[i - 1] += ( n - y - i) * 2;
+        }
+
+        // Линия в круг
+        int circleLen =  (1  + y -  x) / 2 + 1;
+        k = 0;
+        for (int i = 1; i < circleLen +  x - 1; ++i) {
+            if (i <= Math.min( x - 1, circleLen)) {
+                k += 4;
+            } else if (i > Math.max( x - 1, circleLen)) {
+                k -= 4;
+            }
+            result[i - 1] += k;
+            // Глобальная модификация
+            if (i <=  x - 1) {
+                result[i - 1] -= 2;
+            }
+            if (i >= circleLen &&  (1  + y -  x) % 2 == 0) {
+                result[i - 1] -= 2;
+            }
+        }
+        k = 0;
+        for (int i = 1; i < circleLen +  n - y; ++i) {
+            if (i <= Math.min( n - y, circleLen)) {
+                k += 4;
+            } else if (i > Math.max( n - y, circleLen)) {
+                k -= 4;
+            }
+            result[i - 1] += k;
+            // Глобальная модификация
+            if (i <=  n - y) {
+                result[i - 1] -= 2;
+            }
+            if (i >= circleLen && (1  + y -  x) % 2 == 0) {
+                result[i - 1] -= 2;
+            }
+        }
+
+        // Линия в линию
+        k = 0;
+        for (int i = 1; i <  x - 1 +  n - y; ++i) {
+            if (i <= Math.min( x - 1,  n - y)) {
+                k += 2;
+            } else if (i > Math.max( x - 1,  n - y)) {
+                k -= 2;
+            }
+            result[i - 1 + (x == y ? 1 : 2)] += k;
+        }
+
+        return result;
+    }
+}
