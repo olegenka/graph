@@ -1,0 +1,64 @@
+class Solution {
+        
+        public boolean validateBinaryTreeNodes(int n, int[]     leftChild, int  []    rightChild) 
+    {
+     int[] visited = new int[n];
+     for(int i: leftChild)
+    {
+        if(i!=-1) visited[i]=1;
+    }   
+    for (int j: rightChild) //обходим граф
+    {
+        if(j!=-1) visited[j]=1;
+    } 
+    
+    
+      //ищем корень 
+     int count = 0;
+        int root = -1;
+        for(int i = 0; i<n; i++)
+        {
+            if(visited[i]==0)
+            {
+                root = i;
+                count++;
+            }
+        }
+    
+    if(count!=1) 
+    return false; //если корня больше одного возвращаем 0
+    for (int i = 0; i < visited.length; i++) 
+    {
+       visited[i]=0;
+    }
+     visited[root]=1;
+      int index = 0; 
+     int[] nodesToVisit = new int[n]; 
+     nodesToVisit[index++] = root;
+     while (index > 0) 
+     {
+            int node = nodesToVisit[--index];
+            if (leftChild[node] != -1) {
+                if (visited[leftChild[node]]==1)
+                    return false;
+                nodesToVisit[index++] = leftChild[node];
+                visited[leftChild[node]] =1;
+            }
+            if (rightChild[node] != -1) {
+                if (visited[rightChild[node]]==1)
+                    return false;
+                nodesToVisit[index++] = rightChild[node];
+                visited[rightChild[node]] = 1;
+            }
+        }
+        
+       
+    
+
+
+        int finalResult = 1;
+        for (int i = 0; i < visited.length; i++) // Проверяем, все ли узлы были посещены
+        finalResult *= visited[i];
+        return (finalResult == 1);
+    }
+}
